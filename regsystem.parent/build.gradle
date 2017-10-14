@@ -1,0 +1,53 @@
+def nowDate = new Date()
+def nowFormattedDate = nowDate.format("yyyy-MM-dd/HH:mm:ss")
+def author = "zhadyrassyn"
+
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+
+    version = "0.0.1"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    group = "kz.greetgo.zhadyrassyn"
+
+    eclipse.project.natures 'org.springsource.ide.eclipse.gradle.core.nature'
+    compileJava.options.debugOptions.debugLevel = "source,lines,vars"
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.debugOptions.debugLevel = "source,lines,vars"
+    compileTestJava.options.encoding = "UTF-8"
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+        maven { url "http://central.maven.org/maven2/" }
+    }
+}
+
+dependencies {
+    ext.guavaVersion = '12.0'
+    ext.depinjectVersion = '1.1.4'
+    ext.greetgoMvcVersion = "2.0.4"
+
+    testCompile 'org.testng:testng:6.5.1'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+
+}
+
+sourceSets {
+    main {
+//      java.srcDirs = ["src/main/java"]
+        resources.srcDirs = ["src/main/java", "src/main/resources"]
+        output.resourcesDir = "build/classes/main"
+    }
+    test {
+//      java.srcDirs = ["src/test/java"]
+        resources.srcDirs = ["src/test/java", "src/test/resources"]
+        output.resourcesDir = "build/classes/test"
+    }
+}

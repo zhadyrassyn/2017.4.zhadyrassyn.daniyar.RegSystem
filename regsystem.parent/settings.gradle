@@ -1,0 +1,3 @@
+include 'regsystem.client'
+include 'regsystem.controller'
+include 'regsystem.stand'
