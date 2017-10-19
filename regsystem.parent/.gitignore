@@ -5,7 +5,8 @@
 /regsystem.parent.iws
 
 /regsystem.client/node_modules
-/regsystem.client/README.md
+/regsystem.client/.idea
+/regsystem.client/yarn.lock
 
 /regsystem.controller/regsystem.controller.iml
 /regsystem.stand/regsystem.stand.iml
