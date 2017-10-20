@@ -5,7 +5,6 @@ def author = "zhadyrassyn"
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
-    apply plugin: 'eclipse'
     apply plugin: 'maven'
 
     version = "0.0.1"
@@ -13,9 +12,8 @@ allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-    group = "kz.greetgo.zhadyrassyn"
+    group = "kz.zhadyrassyn.regsystem"
 
-    eclipse.project.natures 'org.springsource.ide.eclipse.gradle.core.nature'
     compileJava.options.debugOptions.debugLevel = "source,lines,vars"
     compileJava.options.encoding = "UTF-8"
     compileTestJava.options.debugOptions.debugLevel = "source,lines,vars"
@@ -23,31 +21,27 @@ allprojects {
 }
 
 subprojects {
+
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
     repositories {
         mavenCentral()
-        maven { url "http://central.maven.org/maven2/" }
+        mavenLocal()
+
     }
-}
 
-dependencies {
-    ext.guavaVersion = '12.0'
-    ext.depinjectVersion = '1.1.4'
-    ext.greetgoMvcVersion = "2.0.4"
+    dependencies {
+        ext.greetgoMvcVersion = "2.0.7"
+        ext.greetgoDepInjectVersion = "2.0.0"
+        ext.guavaVersion = '12.0'
 
-    testCompile 'org.testng:testng:6.5.1'
-    testCompile 'org.easytesting:fest-assert-core:2.0M10'
-
-}
-
-sourceSets {
-    main {
-//      java.srcDirs = ["src/main/java"]
-        resources.srcDirs = ["src/main/java", "src/main/resources"]
-        output.resourcesDir = "build/classes/main"
+        testCompile 'org.testng:testng:6.5.1'
+        testCompile 'org.easytesting:fest-assert-core:2.0M10'
     }
-    test {
-//      java.srcDirs = ["src/test/java"]
-        resources.srcDirs = ["src/test/java", "src/test/resources"]
-        output.resourcesDir = "build/classes/test"
-    }
+
+    jar.manifest.attributes 'Implementation-Title': project.name, 'Implementation-Version': version,
+            'Implementation-Author': author, 'Built-By': System.getProperty("user.name"), 'Built-At': nowFormattedDate
+
+    test.useTestNG()
 }

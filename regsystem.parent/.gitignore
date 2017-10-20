@@ -1,12 +1,7 @@
 .gradle
 .idea
+build
+
 /regsystem.parent.iml
 /regsystem.parent.ipr
 /regsystem.parent.iws
-
-/regsystem.client/node_modules
-/regsystem.client/.idea
-/regsystem.client/yarn.lock
-
-/regsystem.controller/regsystem.controller.iml
-/regsystem.stand/regsystem.stand.iml
