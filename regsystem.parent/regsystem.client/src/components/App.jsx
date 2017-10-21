@@ -8,19 +8,45 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            test: false
+            add: false,
+            students: [
+                {
+                    "id": "1",
+                    "name": "Daniyar",
+                    "surname": "Zhadyrassyn",
+                    "patronymic": "Temirbekovich",
+                    "group": "C"
+                },
+                {
+                    "id": "2",
+                    "name": "Daniyar",
+                    "surname": "Zhadyrassyn",
+                    "patronymic": "Temirbekovich",
+                    "group": "C"
+                },
+                {
+                    "id": "3",
+                    "name": "Daniyar",
+                    "surname": "Zhadyrassyn",
+                    "patronymic": "Temirbekovich",
+                    "group": "C"
+                }
+            ]
         };
 
         this.handleClick = this.handleClick.bind(this);
+        this.handlePopupSave = this.handlePopupSave.bind(this);
     }
 
     handleClick(mode) {
         if(mode === "add") {
-            console.log("add");
-            this.setState({test :!this.state.test}, function () {
-                console.log(this.state.test);
+            this.setState({add: true}, function () {
+                console.log("add: " + this.state.add);
             });
-
+        } else {
+            this.setState({add: false}, function () {
+                console.log("add: " + this.state.add);
+            });
         }
         // if(mode === "add") {
         //     this.setState({ add:true });
@@ -28,17 +54,29 @@ export default class App extends Component {
         //     this.setState({ add: false });
         // }
 
-        console.log(this.state.test);
+    }
+
+    handlePopupSave(student) {
+        //!!
+        student.id = "10";
+        console.log("popup save");
+        let students = this.state.students.slice(0);
+        students.push(student);
+
+        this.setState({students:students});
+
     }
 
     render() {
+        const mode = this.state.add;
+        const students = this.state.students;
         return (
             <div>
-                <Popup/>
+                <Popup value={mode} onClick={this.handlePopupSave}/>
                 <div className="container">
                     <div className="row">
                         <div className="col-10">
-                            <Table/>
+                            <Table students={students}/>
                         </div>
                         <div className="col-2">
                             <SideBar onClick={this.handleClick}/>
@@ -46,7 +84,6 @@ export default class App extends Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }
@@ -56,17 +93,23 @@ class SideBar extends Component {
         super(props);
 
         this.handleAddClick = this.handleAddClick.bind(this);
+        this.handleEditClick = this.handleEditClick.bind(this);
     }
 
     handleAddClick(event) {
         this.props.onClick("add");
     }
 
+    handleEditClick(event) {
+        this.props.onClick("edit");
+        console.log("edit");
+    }
+
     render() {
         return (
             <div className="btn-group-vertical">
                 <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={this.handleAddClick}>+</button>
-                <button type="button" className="btn btn-info">...</button>
+                <button type="button" className="btn btn-info" data-toggle="modal" data-target="#exampleModal" onClick={this.handleEditClick}>...</button>
                 <button type="button" className="btn btn-danger">-</button>
             </div>
         );
@@ -76,14 +119,56 @@ class SideBar extends Component {
 class Popup extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            name: "",
+            surname: "",
+            patronymic: "",
+            group: ""
+        };
+
+        this.handleSave = this.handleSave.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleSurnameChange = this.handleSurnameChange.bind(this);
+        this.handlePatronymicChange = this.handlePatronymicChange.bind(this);
+        this.handleGroupChange = this.handleGroupChange.bind(this);
     }
+
+    handleSave() {
+        console.log("save");
+        const student = {
+            name: this.state.name,
+            surname: this.state.surname,
+            patronymic: this.state.patronymic,
+            group: this.state.group
+        };
+        this.props.onClick(student);
+    }
+
+    handleNameChange(event) {
+        this.setState({name: event.target.value});
+    }
+
+    handleSurnameChange(event) {
+        this.setState({surname: event.target.value});
+    }
+
+    handlePatronymicChange(event) {
+        this.setState({patronymic: event.target.value});
+    }
+
+    handleGroupChange(event) {
+        this.setState({group: event.target.value});
+    }
+
     render() {
+        const add = this.props.value;
         return (
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-lg" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Create a new student</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">{add ? "Create a new student" : "Edit current student"}</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -94,25 +179,25 @@ class Popup extends Component {
                                     <div className="form-group row">
                                         <label className="col-form-label col-sm-2" htmlFor="name">Name</label>
                                         <div className="col-sm-10">
-                                            <input type="text" className="form-control" id="name" placeholder="Name" />
+                                            <input type="text" className="form-control" id="name" placeholder="Name" onChange={this.handleNameChange}/>
                                         </div>
                                     </div>
                                     <div className="form-group row">
                                         <label className="col-form-label col-sm-2" htmlFor="surname">Surname</label>
                                         <div className="col-sm-10">
-                                            <input type="text" className="form-control" id="surname" placeholder="Surname" />
+                                            <input type="text" className="form-control" id="surname" placeholder="Surname" onChange={this.handleSurnameChange}/>
                                         </div>
                                     </div>
                                     <div className="form-group row">
                                         <label className="col-form-label col-sm-2" htmlFor="patronymic">Patronymic</label>
                                         <div className="col-sm-10">
-                                            <input type="text" className="form-control" id="patronymic" placeholder="Patronymic" />
+                                            <input type="text" className="form-control" id="patronymic" placeholder="Patronymic" onChange={this.handlePatronymicChange}/>
                                         </div>
                                     </div>
                                     <div className="form-group row">
                                         <label className="col-form-label col-sm-2" htmlFor="group">Group</label>
                                         <div className="col-sm-2">
-                                            <select className="form-control">
+                                            <select className="form-control" onChange={this.handleGroupChange}>
                                                 <option value="0">A</option>
                                                 <option value="1">B</option>
                                                 <option value="2">C</option>
@@ -125,7 +210,7 @@ class Popup extends Component {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save</button>
+                            <button type="button" className="btn btn-primary" onClick={this.handleSave}>Save</button>
                         </div>
                     </div>
                 </div>
@@ -137,7 +222,7 @@ class Popup extends Component {
 
 class Table extends Component {
     render() {
-        const items = students;
+        const items = this.props.students;
         const rows = items.map((student) => <StudentRowItem key={student.id} value={student}/>);
         return (
             <table className="table table-striped table-bordered table-hover table-responsive">
