@@ -26,8 +26,8 @@ subprojects {
     compileTestJava.options.encoding = "UTF-8"
 
     repositories {
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
 
     }
 
@@ -42,6 +42,19 @@ subprojects {
 
     jar.manifest.attributes 'Implementation-Title': project.name, 'Implementation-Version': version,
             'Implementation-Author': author, 'Built-By': System.getProperty("user.name"), 'Built-At': nowFormattedDate
+
+    sourceSets {
+        main {
+            java.srcDirs = ["src/main/java"]
+            resources.srcDirs = ["src/main/java", "src/main/resources"]
+            output.resourcesDir = "build/classes/main"
+        }
+        test {
+            java.srcDirs = ["src/test/java"]
+            resources.srcDirs = ["src/test/java", "src/test/resources"]
+            output.resourcesDir = "build/classes/test"
+        }
+    }
 
     test.useTestNG()
 }
