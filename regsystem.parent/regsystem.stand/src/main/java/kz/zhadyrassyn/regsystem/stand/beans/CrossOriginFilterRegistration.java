@@ -1,5 +1,6 @@
 package kz.zhadyrassyn.regsystem.stand.beans;
 
+import kz.greetgo.depinject.core.Bean;
 import kz.zhadyrassyn.regsystem.stand.util.WebAppContextRegistration;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -12,6 +13,7 @@ import java.util.EnumSet;
 import java.util.Enumeration;
 
 
+@Bean
 public class CrossOriginFilterRegistration implements WebAppContextRegistration, Filter {
 
   @Override

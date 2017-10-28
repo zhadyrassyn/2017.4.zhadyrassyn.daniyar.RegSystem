@@ -2,22 +2,26 @@ const path = require("path");
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-    template: "./dist/index.html",
+    template: "./src/index.html",
     filename: "index.html",
     inject: "body"
 });
 const webpack = require('webpack');
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: "./src/index.jsx",
     output: {
         path: path.resolve("dist"),
-        filename: "index.bundle.js"
+        filename: "bundle.js"
+    },
+    resolve: {
+        extensions: ['.js', '.jsx']
     },
     module: {
         loaders: [
-            { test: /\.js$/, loader: "babel-loader", exclude: /node_modules/ },
-            { test: /\.jsx$/, loader: "babel-loader", exclude: /node_modules/ },
+            { test: /\.jsx?$/, loader: "babel-loader", exclude: /node_modules/,query: {
+                presets: ['react', 'es2015', 'stage-3']
+            } },
             {
                 test: /\.(scss)$/,
                 use: [{

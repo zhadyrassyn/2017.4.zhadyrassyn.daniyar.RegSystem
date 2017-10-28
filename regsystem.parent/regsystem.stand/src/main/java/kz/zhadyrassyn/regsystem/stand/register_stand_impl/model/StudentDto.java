@@ -9,6 +9,9 @@ public class StudentDto {
     public String patronymic;
     public GroupType group;
 
+    public String username;
+    public String password;
+
     public StudentDto() {}
 
     public StudentDto(Long id, String name, String surname, String patronymic, GroupType group) {
