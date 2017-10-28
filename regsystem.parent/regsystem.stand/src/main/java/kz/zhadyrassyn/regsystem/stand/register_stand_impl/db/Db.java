@@ -60,8 +60,8 @@ public class Db implements HasAfterInject{
         RoleDto r1 = new RoleDto(counter.incrementAndGet(), "moderator");
         RoleDto r2 = new RoleDto(counter.incrementAndGet(), "student");
 
-        roles.put(r1.id, r1);
-        roles.put(r2.id, r2);
+        roles.put((long)1, r1);
+        roles.put((long)2, r2);
 
         userToRoleMapping.put(moderator1.id, r1.id);
         userToRoleMapping.put(moderator2.id, r1.id);
