@@ -8,4 +8,12 @@ public class RoleDto {
         this.id = id;
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "RoleDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

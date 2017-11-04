@@ -3,7 +3,6 @@ package kz.zhadyrassyn.regsystem.stand.register_stand_impl;
 import kz.greetgo.depinject.core.Bean;
 import kz.greetgo.depinject.core.BeanGetter;
 import kz.zhadyrassyn.regsystem.controller.model.SignInInfo;
-import kz.zhadyrassyn.regsystem.controller.model.StudentInfo;
 import kz.zhadyrassyn.regsystem.controller.register.SignInRegister;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.db.Db;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.RoleDto;
@@ -27,7 +26,7 @@ public class SignInRegisterImpl implements SignInRegister {
             UserDto fromDb = getUserFromDb(userDto, usersFromDb);
             RoleDto userRole = getUserRole(fromDb);
             response.id = fromDb.id;
-            response.message = "Welcome, " + fromDb.login + ": " + userRole.title;
+            response.message = "Welcome, " + fromDb.email + ": " + userRole.title;
         } else {
             response.id = (long)-1;
             response.message = "Login or password is incorrect";
@@ -44,7 +43,7 @@ public class SignInRegisterImpl implements SignInRegister {
         for (Long key: users.keySet()) {
             UserDto userB = users.get(key);
 
-            if(userA.login.equals(userB.login) &&
+            if(userA.email.equals(userB.email) &&
                     userA.password.equals(userB.password)) {
                 return userB;
             }
@@ -69,7 +68,7 @@ public class SignInRegisterImpl implements SignInRegister {
         for (Long key: users.keySet()) {
             UserDto userB = users.get(key);
 
-            if(userA.login.equals(userB.login) &&
+            if(userA.email.equals(userB.email) &&
                     userA.password.equals(userB.password)) {
                 f = true;
                 break;

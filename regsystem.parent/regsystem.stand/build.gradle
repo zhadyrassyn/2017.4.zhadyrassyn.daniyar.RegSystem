@@ -5,5 +5,9 @@ dependencies {
     compile "kz.greetgo.mvc:greetgo.mvc:$greetgoMvcVersion"
     compile "kz.greetgo.mvc:greetgo.mvc.jetty:$greetgoMvcVersion"
 
+    // https://mvnrepository.com/artifact/javax.mail/mail
+    compile group: 'javax.mail', name: 'mail', version: '1.4.1'
+
+
     compile "com.google.guava:guava:$guavaVersion"
 }

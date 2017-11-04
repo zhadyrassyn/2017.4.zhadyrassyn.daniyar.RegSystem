@@ -8,6 +8,7 @@ import kz.zhadyrassyn.regsystem.controller.utils.Controller;
 @Bean
 @Mapping("/intro")
 public class TestController implements Controller{
+
     @ToJson
     @Mapping("/index")
     public String intro() {

@@ -5,7 +5,6 @@ import kz.greetgo.depinject.core.BeanGetter;
 import kz.zhadyrassyn.regsystem.controller.model.SignUpInfo;
 import kz.zhadyrassyn.regsystem.controller.register.SignUpRegister;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.db.Db;
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.RoleDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.UserDto;
 
 import java.util.Map;
@@ -27,14 +26,14 @@ public class SignUpRegisterImpl implements SignUpRegister{
         } else {
             saveInDb(userA);
             response.message = String.format("User with username: %s," +
-                    " and password %s was created with role %s and ID: %d", userA.login,
+                    " and password %s was created with role %s and ID: %d", userA.email,
                     userA.password, "student", userA.id);
         }
         return response;
     }
 
     private void saveInDb(UserDto userDto) {
-        userDto.disabled = false;
+        userDto.active = false;
         userDto.id = db.get().counter.incrementAndGet();
         db.get().users.put(userDto.id, userDto);
 
@@ -49,7 +48,7 @@ public class SignUpRegisterImpl implements SignUpRegister{
         for (Long key: users.keySet()) {
             UserDto userB = users.get(key);
 
-            if(userA.login.equals(userB.login) &&
+            if(userA.email.equals(userB.email) &&
                     userA.password.equals(userB.password)) {
                 f = true;
                 break;
