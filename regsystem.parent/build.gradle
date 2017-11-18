@@ -35,6 +35,9 @@ subprojects {
         ext.greetgoMvcVersion = "2.0.7"
         ext.greetgoDepInjectVersion = "2.0.0"
         ext.guavaVersion = '12.0'
+        ext.greetGoEmailVersion = '0.0.10'
+        ext.greetgoConfVersion = '0.1.5'
+        ext.greetgoScheduling = '2.0.0'
 
         testCompile 'org.testng:testng:6.5.1'
         testCompile 'org.easytesting:fest-assert-core:2.0M10'

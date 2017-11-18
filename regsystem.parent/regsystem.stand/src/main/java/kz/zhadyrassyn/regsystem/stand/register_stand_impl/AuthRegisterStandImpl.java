@@ -2,12 +2,14 @@ package kz.zhadyrassyn.regsystem.stand.register_stand_impl;
 
 import kz.greetgo.depinject.core.Bean;
 import kz.greetgo.depinject.core.BeanGetter;
+import kz.greetgo.email.Email;
+import kz.greetgo.email.EmailSender;
 import kz.zhadyrassyn.regsystem.controller.model.AuthInfo;
 import kz.zhadyrassyn.regsystem.controller.register.AuthRegister;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.db.Db;
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.helpers.SendMailHelper;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.RoleDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.UserDto;
+import kz.zhadyrassyn.regsystem.stand.register_stand_impl.scheduler.MyConfig;
 
 import java.util.Map;
 import java.util.UUID;
@@ -15,6 +17,10 @@ import java.util.UUID;
 @Bean
 public class AuthRegisterStandImpl implements AuthRegister{
     public BeanGetter<Db> db;
+
+    public BeanGetter<EmailSender> emailSenderBeanGetter;
+
+    public BeanGetter<MyConfig> config;
 
     @Override
     public AuthInfo signIn(String email, String password) {
@@ -82,9 +88,18 @@ public class AuthRegisterStandImpl implements AuthRegister{
     }
 
     private void sendEmail(UserDto savedUser) {
-        SendMailHelper sendMailHelper = new SendMailHelper(savedUser.email,
-                savedUser.activationToken);
-        sendMailHelper.send();
+
+        String body = "Dear user. We are glad to welcome you!\n\n"
+                + "Please, follow to link below to confirm your registration\n\n"
+                + "http://localhost:1234/regsystem/api/sign/up/" + savedUser.activationToken;
+
+        Email emailSend = new Email();
+        emailSend.setFrom(config.get().loginAccount());
+        emailSend.setTo(savedUser.email);
+        emailSend.setSubject("Registration validation");
+        emailSend.setBody(body);
+
+        emailSenderBeanGetter.get().send(emailSend);
     }
 
     private boolean checkForExistence(String email, String password) {

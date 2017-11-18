@@ -1,6 +1,6 @@
-package kz.zhadyrassyn.regsystem.stand.register_stand_impl.constants;
+package kz.zhadyrassyn.regsystem.server.util;
 
-public class CommonConstants {
+public class CommonConstant {
     public String username = "zhadyrassyn.daniyar@is.sdu.edu.kz";
     public String password = "134679976431";
 }

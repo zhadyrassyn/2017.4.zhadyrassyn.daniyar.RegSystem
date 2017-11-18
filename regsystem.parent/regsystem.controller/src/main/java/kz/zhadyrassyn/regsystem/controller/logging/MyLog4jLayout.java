@@ -77,4 +77,3 @@ public class MyLog4jLayout extends org.apache.log4j.Layout {
   public void activateOptions() {
   }
 }
-

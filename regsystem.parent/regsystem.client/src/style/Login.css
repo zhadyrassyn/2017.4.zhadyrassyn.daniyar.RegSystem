@@ -1,0 +1,22 @@
+html, body {
+  height: 100%;
+}
+
+.wrapper {
+  height: 800px;
+}
+
+#form_login {
+  border: 1px solid #c1c1c1;
+  border-radius: 20px;
+  padding: 30px;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(230,230,230,1);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(230,230,230,1);
+  box-shadow: 10px 10px 5px 0px rgba(230,230,230,1);
+}
+
+#form_login button {
+  float: right;
+
+}
+

@@ -1,63 +1,38 @@
-const path = require("path");
+const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-    template: "./src/index.html",
-    filename: "index.html",
-    inject: "body"
+    template: './src/index.html',
+    filename: 'index.html',
+    inject: 'body'
 });
-const webpack = require('webpack');
 
 module.exports = {
-    entry: "./src/index.jsx",
+    entry: './src/index.js',
     output: {
-        path: path.resolve("dist"),
-        filename: "bundle.js"
+        path: path.resolve('dist'),
+        filename: 'index.bundle.js'
     },
     resolve: {
         extensions: ['.js', '.jsx']
     },
     module: {
         loaders: [
-            { test: /\.jsx?$/, loader: "babel-loader", exclude: /node_modules/,query: {
-                presets: ['react', 'es2015', 'stage-3']
-            } },
             {
-                test: /\.(scss)$/,
-                use: [{
-                    loader: 'style-loader', // inject CSS to page
-                }, {
-                    loader: 'css-loader', // translates CSS into CommonJS modules
-                }, {
-                    loader: 'postcss-loader', // Run post css actions
-                    options: {
-                        plugins: function () { // post css plugins, can be exported to postcss.config.js
-                            return [
-                                require('precss'),
-                                require('autoprefixer')
-                            ];
-                        }
-                    }
-                }, {
-                    loader: 'sass-loader' // compiles SASS to CSS
-                }]
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['react', 'es2015', 'stage-3']
+                }
             },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            }
+            {test: /\.css$/, loader: "style-loader!css-loader"}
+
         ]
     },
-    plugins: [
-        HtmlWebpackPluginConfig,
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            Popper: ['popper.js', 'default']
-        })
-    ]
+    devServer: {
+        port: 1234,
+        historyApiFallback: true
+    },
+    plugins: [HtmlWebpackPluginConfig]
 };

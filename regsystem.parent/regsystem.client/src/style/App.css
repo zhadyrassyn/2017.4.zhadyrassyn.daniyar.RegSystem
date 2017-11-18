@@ -1,0 +1,19 @@
+#message_form {
+  width: 400px;
+}
+  #message_form textarea {
+    resize: none;
+  }
+  
+  #messageLengthRestriction {
+    text-align: right;
+  }
+
+
+  .history {
+    padding-top: 20px;
+  }
+
+  #historyTable {
+    margin-top: 20px;
+  }
