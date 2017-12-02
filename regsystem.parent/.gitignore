@@ -1,6 +1,7 @@
 .gradle
 .idea
 build
+out
 
 /regsystem.parent.iml
 /regsystem.parent.ipr
