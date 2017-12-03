@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as AuthActionCreators from '../actions/AuthActions';
 import * as UserActionCreators from '../actions/UserActions'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom';
 
 import AlertContainer from 'react-alert'
 
@@ -80,6 +81,10 @@ class Login extends React.Component {
               </div>
 
               <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Войти</button>
+
+              <p>Еще не зарегестрировались?</p>
+              <Link to="/register" className="btn btn-link">Зарегестрироваться</Link>
+
             </form>
           </div>
         </div>

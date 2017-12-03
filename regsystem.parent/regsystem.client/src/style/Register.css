@@ -1,0 +1,32 @@
+/* For Firefox */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#genderLabel {
+    margin-right: 10px;
+}
+
+#register-wrapper {
+    height: 800px;
+}
+
+#register-wrapper form {
+    border: 1px solid #c1c1c1;
+    border-radius: 20px;
+    padding: 30px;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(230,230,230,1);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(230,230,230,1);
+    box-shadow: 10px 10px 5px 0px rgba(230,230,230,1);
+}
+
+#register-wrapper button[type=submit] {
+    float: right;
+}
