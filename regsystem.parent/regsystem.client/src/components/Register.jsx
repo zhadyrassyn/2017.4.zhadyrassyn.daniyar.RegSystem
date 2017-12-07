@@ -13,6 +13,7 @@ import { withRouter } from 'react-router-dom';
 import * as GroupActionCreators from '../actions/GroupActions';
 import { bindActionCreators } from 'redux'
 
+import InputMask from 'react-input-mask';
 
 export class Register extends Component {
     constructor(props) {
@@ -23,14 +24,23 @@ export class Register extends Component {
         this.state = {
             studentId: '',
             birthDate: new Date(),
+            name: '',
+            surname: '',
+            patronymic: '',
+            email: '',
+            password: '',
+            phone: '',
+            groupId: -1,
+            gender: 1,
+
             showLoader: false,
             course: 1,
-            faculty: 'EN'
+            faculty: 'EN',
+
         }
 
         this.handleDateChange = this.handleDateChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleStudentIdChange = this.handleStudentIdChange.bind(this)
         this.handleFetchGroupRequest = this.handleFetchGroupRequest.bind(this)
 
         this.boundActionCreators = bindActionCreators(GroupActionCreators, dispatch)
@@ -54,7 +64,11 @@ export class Register extends Component {
                     this.setState({showLoader: false})
                 },
                 () => {
-                    this.setState({showLoader: false})
+                    //setting first option as selected state
+                    let e = document.getElementById("studentGroup");
+                    let groupId = e.options[e.selectedIndex].value;
+
+                    this.setState({showLoader: false, groupId: groupId})
                 }
             )
 
@@ -70,7 +84,30 @@ export class Register extends Component {
 
     handleStudentIdChange(event) {
         this.setState({studentId:event.target.value})
-        this.handleFetchGroupRequest()
+    }
+
+    handleNameChange(event) {
+        this.setState({name: event.target.value})
+    }
+
+    handleSurnameChange(event) {
+        this.setState({surname: event.target.value})
+    }
+
+    handlePatronymicChange(event) {
+        this.setState({patronymic: event.target.value})
+    }
+
+    handleEmailChange(event) {
+        this.setState({email: event.target.value})
+    }
+
+    handlePasswordChange(event) {
+        this.setState({password: event.target.value})
+    }
+
+    handlePhoneChange(event) {
+        this.setState({phone: event.target.value})
     }
 
     handleCourseChange(event) {
@@ -83,19 +120,43 @@ export class Register extends Component {
         this.handleFetchGroupRequest()
     }
 
+    handleGroupChange(event) {
+        this.setState({groupId: event.target.value})
+    }
+
+    handleGenderChange(event) {
+        const gender = event.target.value
+        this.setState({gender: gender === 'male' ? 1 : 0})
+    }
+
+
 
     handleSubmit(event) {
         event.preventDefault()
-        const studentId = this.state.studentId;
-        let form = document.getElementById('register-form');
+        // let form = document.getElementById('register-form');
+        //
+        // if (form.checkValidity() === false || studentId.length != 9) {
+        //     event.preventDefault();
+        //     event.stopPropagation();
+        //
+        //     form.classList.add('was-validated');
+        //     return
+        // }
 
-        if (form.checkValidity() === false || studentId.length != 9) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            form.classList.add('was-validated');
-            return
+        const student = {
+            studentId: this.state.studentId,
+            name: this.state.name,
+            surname: this.state.surname,
+            patronymic: this.state.patronymic,
+            email: this.state.email,
+            password: this.state.password,
+            phone: this.state.phone,
+            gender: this.state.gender,
+            birthDate: this.state.birthDate,
+            groupId: this.state.groupId
         }
+
+        console.log(JSON.stringify(student))
 
     }
 
@@ -129,7 +190,7 @@ export class Register extends Component {
                                 <div className="form-group">
                                     <label htmlFor="studentId">Студенческий ID:</label>
                                     <input type="number" className="form-control" id="studentId" placeholder="Студенческий ID"
-                                           onChange={this.handleStudentIdChange} required/>
+                                           onChange={this.handleStudentIdChange.bind(this)} required/>
                                     <div class="invalid-feedback">
                                         Напишите студенческий ID. Он должен содержать 9 чисел
                                     </div>
@@ -138,7 +199,8 @@ export class Register extends Component {
                                 <div className="row">
                                     <div className="form-group col">
                                         <label htmlFor="studentName">Имя:</label>
-                                        <input type="text" className="form-control" id="studentName" placeholder="Имя студента" required/>
+                                        <input type="text" className="form-control" id="studentName" placeholder="Имя студента" required
+                                               onChange={this.handleNameChange.bind(this)}/>
                                         <div class="invalid-feedback">
                                             Напишите ваше имя
                                         </div>
@@ -146,7 +208,8 @@ export class Register extends Component {
 
                                     <div className="form-group col">
                                         <label htmlFor="studentSurname">Фамилия:</label>
-                                        <input type="text" className="form-control" id="studentSurname" placeholder="Фамилия студента" required/>
+                                        <input type="text" className="form-control" id="studentSurname" placeholder="Фамилия студента" required
+                                            onChange={this.handleSurnameChange.bind(this)}/>
                                         <div class="invalid-feedback">
                                             Напишите вашу фамилию
                                         </div>
@@ -154,19 +217,45 @@ export class Register extends Component {
 
                                     <div className="form-group col">
                                         <label htmlFor="studentPatronymic">Отчество:</label>
-                                        <input type="text" className="form-control" id="studentPatronymic" placeholder="Отчество студента"/>
+                                        <input type="text" className="form-control" id="studentPatronymic" placeholder="Отчество студента"
+                                            onChange={this.handlePatronymicChange.bind(this)}/>
                                     </div>
                                 </div>
 
 
 
-                                <div className="form-group">
-                                    <label htmlFor="studentEmail">Email:</label>
-                                    <input type="email" className="form-control" id="studentEmail" placeholder="Email студента" required/>
-                                    <div className="invalid-feedback">
-                                        Напишите ваш email
+                                <div className="row">
+                                    <div className="col-12">
+                                        <div className="form-group">
+                                            <label htmlFor="studentEmail">Email:</label>
+                                            <input type="email" className="form-control" id="studentEmail" placeholder="Email студента" required
+                                                onChange={this.handleEmailChange.bind(this)}/>
+                                            <div className="invalid-feedback">
+                                                Напишите ваш email
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div className="row">
+                                    <div className="col-6">
+                                        <label htmlFor="studentPassword">Пароль:</label>
+                                        <input type="password" className="form-control" id="studentPassword" placeholder="Фамиилия студента" required
+                                            onChange={this.handlePasswordChange.bind(this)}/>
+                                        <div className="invalid-feedback">
+                                            Напишите пароль
+                                        </div>
+                                    </div>
+                                    <div className="col-6">
+                                        <label htmlFor="studentPhone">Телефон:</label>
+                                        <InputMask {...this.props} mask="+7(999) 999-99-99" maskChar="x" className="form-control"
+                                                   onChange={this.handlePhoneChange.bind(this)} id="studentPhone"/>
+                                        <div className="invalid-feedback">
+                                            Напишите телефон
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div className="row">
                                     <div className="col">
@@ -194,7 +283,7 @@ export class Register extends Component {
                                     <div className="col">
                                         <div className="form-group">
                                             <label htmlFor="studentGroup">Группа:</label>
-                                            <select className="form-control" id="studentGroup">
+                                            <select className="form-control" id="studentGroup" onChange={this.handleGroupChange.bind(this)}>
                                                 {groupItems}
                                             </select>
                                         </div>
@@ -203,16 +292,18 @@ export class Register extends Component {
                                 <div className="row">
                                     <div className="col">
                                         <label htmlFor="genderMale" id="genderLabel">Пол:</label>
-                                        <div className="form-check form-check-inline">
 
+                                        <div className="form-check form-check-inline">
                                             <label className="form-check-label">
-                                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="genderMale" value="male" checked/>   Мужской
+                                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="genderMale" value="male" checked={this.state.gender === 1}
+                                                    onChange={this.handleGenderChange.bind(this)}/>   Мужской
                                             </label>
                                         </div>
 
                                         <div className="form-check form-check-inline">
                                             <label className="form-check-label">
-                                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="genderWoman" value="female"/> Женский
+                                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="genderWoman" value="female" checked={this.state.gender === 0}
+                                                       onChange={this.handleGenderChange.bind(this)}/> Женский
                                             </label>
                                         </div>
                                     </div>
