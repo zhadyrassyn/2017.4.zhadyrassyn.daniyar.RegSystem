@@ -10,6 +10,18 @@ export const constants = {
     LOGOUT: 'USERS_LOGOUT',
 
     ALERT_SUCCESS_SHOW: 'ALERT_SUCCESS_SHOW',
-    ALERT_ERROR_SHOW: 'ALERT_ERROR_SHOW'
+    ALERT_ERROR_SHOW: 'ALERT_ERROR_SHOW',
+
+    //GROUP
+    FETCH_GROUPS_REQUEST: 'FETCH_GROUPS_REQUEST',
+    FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
+    FETCH_GROUPS_FAILURE: 'FETCH_GROUPS_FAILURE'
 
 };
+
+export const facultyConstants = {
+    ENGINEERING_FACULTY: 'Инженерии и естественных наук',
+    LAW_FACULTY: 'Закона и социальных наук',
+    PHILOSOPHY_FACULTY: 'Философии',
+    ECONOMY_FACULTY: 'Экономиста'
+}

@@ -3,6 +3,7 @@ package kz.zhadyrassyn.regsystem.stand.register_stand_impl.db;
 import kz.greetgo.depinject.core.Bean;
 import kz.greetgo.depinject.core.HasAfterInject;
 import kz.zhadyrassyn.regsystem.controller.model.GroupType;
+import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.GroupDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.RoleDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.StudentDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.UserDto;
@@ -22,6 +23,8 @@ public class Db implements HasAfterInject{
     public final Map<Long, Long> userToRoleMapping = new HashMap<>();
 
     public final Map<String, UserDto> activationTokenToUserMapping = new HashMap<>();
+
+    public final Map<Long, GroupDto> groups = new HashMap<>();
 
     @Override
     public void afterInject() throws Exception {
@@ -66,6 +69,27 @@ public class Db implements HasAfterInject{
 
         userToRoleMapping.put(moderator1.id, r1.id);
         userToRoleMapping.put(moderator2.id, r1.id);
+
+        String[] faculties = {"EN", "PHIL", "LAW", "ECO"};
+        String[] groupNames = {"A", "B", "C", "D"};
+        for(int i = 0; i < 4; i++) { //faculty
+            for(int j = 0; j < 4; j++) { //course
+                for(int k = 0; k < 4; k++) { //groupname
+                    GroupDto g = new GroupDto();
+                    g.id = counter.incrementAndGet();
+                    g.faculty = faculties[i];
+                    g.course = j+1;
+                    g.name = faculties[i] + "" + g.course + "" + groupNames[k] + "03";
+
+                    groups.put(g.id, g);
+                }
+            }
+        }
+//        for(int i = 1; i <= 4; i++) {
+//            for(int j = 1; j <= 4; j++) {
+
+//            }
+//        }
     }
 
 }
