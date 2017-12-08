@@ -21,9 +21,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Db implements HasAfterInject{
 
     //counters
-    private AtomicLong userCounter = new AtomicLong();
-    private AtomicLong groupCounter = new AtomicLong();
-    private AtomicLong roleCounter = new AtomicLong();
+    public AtomicLong userCounter = new AtomicLong();
+    public AtomicLong groupCounter = new AtomicLong();
+    public AtomicLong roleCounter = new AtomicLong();
 
     //dtos
     public final Map<Long, UserDto> users = new HashMap<>();
@@ -61,7 +61,6 @@ public class Db implements HasAfterInject{
         u1.password = "123";
         u1.gender = GenderEnum.MALE;
         u1.birthDate = stringToDate("11/06/1997");
-        u1.status = UserStatusEnum.INACTIVE;
 
         UserDto u2 = new UserDto();
         u2.id = userCounter.incrementAndGet();

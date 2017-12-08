@@ -1,6 +1,7 @@
 package kz.zhadyrassyn.regsystem.stand.register_stand_impl;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import kz.greetgo.depinject.core.Bean;
 import kz.greetgo.depinject.core.BeanGetter;
 import kz.greetgo.email.Email;
@@ -26,16 +27,35 @@ public class AuthRegisterStandImpl implements AuthRegister{
 
     @Override
     public SignUpResponse signUp(String request) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         SignUpRequest requestInfo = gson.fromJson(request, SignUpRequest.class);
-        System.out.println(requestInfo);
+        System.out.println("param: " + requestInfo);
+
+        SignUpResponse signUpResponse = new SignUpResponse();
 
         if(exists(requestInfo, db.get().users)) {
-            System.out.println("exists");
+            signUpResponse.message = "Пользователь с таким ID уже существует";
+            signUpResponse.status = "-1";
         } else {
-            System.out.println("not exists");
+            saveUser(requestInfo);
+
+            signUpResponse.message = "Ваша заявка принята и отравлена на обработку модератором." +
+                    "Ждите ответа в письме";
+            signUpResponse.status = "1";
         }
-        return new SignUpResponse();
+        return signUpResponse;
+    }
+
+    private void saveUser(SignUpRequest requestInfo) {
+        long nextId = db.get().userCounter.incrementAndGet();
+        UserDto userDto = new UserDto(nextId, requestInfo.studentId,
+                requestInfo.name, requestInfo.surname, requestInfo.patronymic,
+                requestInfo.email, requestInfo.password, requestInfo.phone,
+                requestInfo.gender, requestInfo.birthDate);
+
+        db.get().users.put(userDto.id, userDto); //saving
+        db.get().userToRoleMapping.put(userDto.id, (long)1); //provide role
+        db.get().userToGroupMapping.put(userDto.id, requestInfo.groupId); //map to group
     }
 
     private boolean exists(SignUpRequest user, Map<Long, UserDto> users) {

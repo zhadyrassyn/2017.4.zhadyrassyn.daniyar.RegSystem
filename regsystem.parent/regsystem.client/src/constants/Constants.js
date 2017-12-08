@@ -15,9 +15,18 @@ export const constants = {
     //GROUP
     FETCH_GROUPS_REQUEST: 'FETCH_GROUPS_REQUEST',
     FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
-    FETCH_GROUPS_FAILURE: 'FETCH_GROUPS_FAILURE'
+    FETCH_GROUPS_FAILURE: 'FETCH_GROUPS_FAILURE',
+
+    //SIGNUP
+    SIGN_UP_REQUEST: 'SIGN_UP_REQUEST',
+    SIGN_UP_SUCCESS: 'SIGN_UP_SUCCESS',
+    SIGN_UP_FAILURE: 'SIGN_UP_FAILURE'
 
 };
+
+export const urls = {
+    BASE_API: 'http://localhost:8080/regsystem/api'
+}
 
 export const facultyConstants = {
     ENGINEERING_FACULTY: 'Инженерии и естественных наук',

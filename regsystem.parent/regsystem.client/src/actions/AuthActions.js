@@ -42,3 +42,21 @@ export const login = (username, password, onError) => dispatch => {
     }
   )
 }
+
+export const signUp = (user, onError) => dispatch => {
+    dispatch(signUpRequest(user))
+    authService.register(user).then(
+        success => {
+            dispatch(signUpSuccess(success))
+            console.log("SUCCESS: " + JSON.stringify(success))
+        },
+        error => {
+            onError()
+            dispatch(signUpError(error))
+            dispatch(alertError('Произошла ошибка при регистрации'))
+        }
+    )
+    function signUpRequest(user) { return { type: constants.SIGN_UP_REQUEST, user} }
+    function signUpSuccess(response) { return { type: constants.SIGN_UP_SUCCESS, response } }
+    function signUpError(error) { return { type: constants.SIGN_UP_FAILURE, error } }
+}

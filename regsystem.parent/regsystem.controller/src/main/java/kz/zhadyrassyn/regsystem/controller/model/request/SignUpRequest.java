@@ -12,7 +12,7 @@ public class SignUpRequest {
     public String email;
     public String password;
     public String phone;
-    public int groupId;
+    public long groupId;
     public GenderEnum gender;
     public Date birthDate;
 

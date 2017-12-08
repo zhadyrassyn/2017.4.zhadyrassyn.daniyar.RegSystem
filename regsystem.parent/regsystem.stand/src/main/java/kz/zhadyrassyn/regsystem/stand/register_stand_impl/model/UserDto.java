@@ -16,7 +16,22 @@ public class UserDto {
     public String phone;
     public GenderEnum gender;
     public Date birthDate;
-    public UserStatusEnum status;
+    public UserStatusEnum status = UserStatusEnum.NOT_VALIDE;
+
+    public UserDto() {}
+
+    public UserDto(Long id, String studentId, String name, String surname, String patronymic, String email, String password, String phone, GenderEnum gender, Date birthDate) {
+        this.id = id;
+        this.studentId = studentId;
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthDate = birthDate;
+    }
 
     @Override
     public String toString() {

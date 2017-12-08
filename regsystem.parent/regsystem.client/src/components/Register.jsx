@@ -11,6 +11,7 @@ import {facultyConstants} from "../constants/Constants";
 import { withRouter } from 'react-router-dom';
 
 import * as GroupActionCreators from '../actions/GroupActions';
+import * as AuthActionCreators from '../actions/AuthActions'
 import { bindActionCreators } from 'redux'
 
 import InputMask from 'react-input-mask';
@@ -39,11 +40,11 @@ export class Register extends Component {
 
         }
 
-        this.handleDateChange = this.handleDateChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleFetchGroupRequest = this.handleFetchGroupRequest.bind(this)
 
         this.boundActionCreators = bindActionCreators(GroupActionCreators, dispatch)
+        this.boundActionCreators = bindActionCreators(AuthActionCreators, dispatch)
     }
 
     componentDidMount() {
@@ -79,7 +80,7 @@ export class Register extends Component {
 
 
     handleDateChange(date) {
-        this.setState = ({birthDate: date})
+        this.setState({birthDate: date})
     }
 
     handleStudentIdChange(event) {
@@ -125,8 +126,8 @@ export class Register extends Component {
     }
 
     handleGenderChange(event) {
-        const gender = event.target.value
-        this.setState({gender: gender === 'male' ? 1 : 0})
+        const gender = event.target.value === 'male' ? 1 : 0
+        this.setState({gender: gender})
     }
 
 
@@ -158,6 +159,17 @@ export class Register extends Component {
 
         console.log(JSON.stringify(student))
 
+        let { dispatch } = this.props
+
+        // this.setState({showLoader: true})
+
+        let signUpAction = AuthActionCreators.signUp(student,
+            () => {
+                this.setState({showLoader: false})
+            }
+        )
+
+        dispatch(signUpAction)
     }
 
 
@@ -312,7 +324,7 @@ export class Register extends Component {
                                         <div className="form-group">
                                             <label htmlFor="studentBirthdate">Дата рождения: </label>
                                             <DatePicker id="studentBirthdate"
-                                                        onChange={this.handleDateChange}
+                                                        onChange={this.handleDateChange.bind(this)}
                                                         value={this.state.birthDate}
                                             />
                                         </div>
