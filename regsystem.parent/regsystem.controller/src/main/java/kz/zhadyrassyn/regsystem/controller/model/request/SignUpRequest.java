@@ -1,12 +1,10 @@
-package kz.zhadyrassyn.regsystem.stand.register_stand_impl.model;
+package kz.zhadyrassyn.regsystem.controller.model.request;
 
 import kz.zhadyrassyn.regsystem.controller.model.enums.GenderEnum;
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.enums.UserStatusEnum;
 
 import java.util.Date;
 
-public class UserDto {
-    public Long id;
+public class SignUpRequest {
     public String studentId;
     public String name;
     public String surname;
@@ -14,24 +12,23 @@ public class UserDto {
     public String email;
     public String password;
     public String phone;
+    public int groupId;
     public GenderEnum gender;
     public Date birthDate;
-    public UserStatusEnum status;
 
     @Override
     public String toString() {
-        return "UserDto{" +
-                "id=" + id +
-                ", studentId='" + studentId + '\'' +
+        return "SignUpRequest{" +
+                "studentId='" + studentId + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
+                ", groupId=" + groupId +
                 ", gender=" + gender +
                 ", birthDate=" + birthDate +
-                ", status=" + status +
                 '}';
     }
 }
