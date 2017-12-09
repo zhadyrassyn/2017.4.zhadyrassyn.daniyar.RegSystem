@@ -4,6 +4,7 @@ import kz.greetgo.depinject.core.Bean;
 import kz.greetgo.depinject.core.BeanGetter;
 import kz.greetgo.mvc.annotations.*;
 import kz.zhadyrassyn.regsystem.controller.model.AuthInfo;
+import kz.zhadyrassyn.regsystem.controller.model.response.SignInResponse;
 import kz.zhadyrassyn.regsystem.controller.model.response.SignUpResponse;
 import kz.zhadyrassyn.regsystem.controller.register.AuthRegister;
 import kz.zhadyrassyn.regsystem.controller.utils.Controller;
@@ -14,8 +15,8 @@ public class AuthController implements Controller {
 
     @ToJson
     @Mapping("/sign/in")
-    public AuthInfo signIn(@Par("email")String email, @Par("password")String password) {
-        return authRegister.get().signIn(email, password);
+    public SignInResponse signIn(@RequestInput String signInRequest) {
+        return authRegister.get().signIn(signInRequest);
     }
 
     @ToJson

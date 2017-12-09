@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 public enum UserStatusEnum {
 
-    NOT_VALIDE, INACTIVE, ACTIVE;
+    NOT_VALIDATED, NOT_VALIDE, INACTIVE, ACTIVE;
 
 }

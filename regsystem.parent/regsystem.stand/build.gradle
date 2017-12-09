@@ -9,7 +9,7 @@ dependencies {
 
     compile "kz.greetgo:greetgo.conf:$greetgoConfVersion"
     compile "kz.greetgo:greetgo.email:$greetGoEmailVersion"
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    compile "io.jsonwebtoken:jjwt:$jwtVersion"
 
 
     compile "com.google.guava:guava:$guavaVersion"

@@ -7,13 +7,16 @@ import kz.greetgo.depinject.core.BeanGetter;
 import kz.greetgo.email.Email;
 import kz.greetgo.email.EmailSender;
 import kz.zhadyrassyn.regsystem.controller.model.AuthInfo;
+import kz.zhadyrassyn.regsystem.controller.model.request.SignInRequest;
 import kz.zhadyrassyn.regsystem.controller.model.request.SignUpRequest;
+import kz.zhadyrassyn.regsystem.controller.model.response.SignInResponse;
 import kz.zhadyrassyn.regsystem.controller.model.response.SignUpResponse;
 import kz.zhadyrassyn.regsystem.controller.register.AuthRegister;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.db.Db;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.RoleDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.UserDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.scheduler.MyConfig;
+import kz.zhadyrassyn.regsystem.stand.register_stand_impl.util.JwtUtil;
 
 import java.util.*;
 
@@ -24,6 +27,8 @@ public class AuthRegisterStandImpl implements AuthRegister{
     public BeanGetter<EmailSender> emailSenderBeanGetter;
 
     public BeanGetter<MyConfig> config;
+
+    public BeanGetter<JwtUtil> jwtUtil;
 
     @Override
     public SignUpResponse signUp(String request) {
@@ -67,28 +72,52 @@ public class AuthRegisterStandImpl implements AuthRegister{
 
 
     @Override
-    public AuthInfo signIn(String email, String password) {
-        AuthInfo output = new AuthInfo();
+    public SignInResponse signIn(String request) {
+        SignInResponse response = new SignInResponse();
 
-        boolean existsInDb = checkForExistence(email, password);
-        if(!existsInDb) {
-            output.message = "Unknown user";
-            return output;
+        Gson gson = new Gson();
+        SignInRequest requestInfo = gson.fromJson(request, SignInRequest.class);
+        System.out.println("Sign in request: " + requestInfo);
+
+        //check if exists by email and password
+        List<UserDto> userDtos = new ArrayList<>(db.get().users.values());
+        boolean exists = userDtos.stream()
+                .anyMatch(t -> Objects.equals(requestInfo.email,
+                        t.email) && Objects.equals(requestInfo.password, t.password));
+
+        if(exists) {
+            String token = jwtUtil.get().generateToken(requestInfo.email);
+            response.status = "1";
+            response.token = token;
+        } else {
+            response.status = "-1";
         }
 
-        //retrieve user
-        UserDto user = getUser(email, password);
+        return response;
+    }
 
-//        if(!user.active) {
+//        AuthInfo output = new AuthInfo();
+//
+//        boolean existsInDb = checkForExistence(email, password);
+//        if(!existsInDb) {
 //            output.message = "Unknown user";
 //            return output;
 //        }
-
-
-        output.message = "Welcome! Your role is : " + getUserRole(user.id);
-
-        return output;
-    }
+//
+//        //retrieve user
+//        UserDto user = getUser(email, password);
+//
+////        if(!user.active) {
+////            output.message = "Unknown user";
+////            return output;
+////        }
+//
+//
+//        output.message = "Welcome! Your role is : " + getUserRole(user.id);
+//
+//        return output;
+//        throw new RuntimeException();
+//    }
 
 //    @Override
 //    public AuthInfo signUp(String email, String password) {

@@ -9,11 +9,11 @@ function login(user) {
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: user.username, password: user.password})
+        body: JSON.stringify(user)
     }
 
     // const params = 'username=' + user.username + '&password=' + user.password;
-    return fetch('http://localhost:8080/rest/auth', requestOptions)
+    return fetch(urls.BASE_API + '/sign/in', requestOptions)
         .then(response => {
             if (!response.ok) {
                 return Promise.reject(response.statusText)

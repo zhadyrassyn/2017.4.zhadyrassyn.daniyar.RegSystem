@@ -16,7 +16,7 @@ public class UserDto {
     public String phone;
     public GenderEnum gender;
     public Date birthDate;
-    public UserStatusEnum status = UserStatusEnum.NOT_VALIDE;
+    public UserStatusEnum status = UserStatusEnum.NOT_VALIDATED;
 
     public UserDto() {}
 
