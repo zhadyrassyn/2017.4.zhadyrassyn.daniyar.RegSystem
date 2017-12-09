@@ -3,11 +3,11 @@ package kz.zhadyrassyn.regsystem.stand.register_stand_impl.db;
 import kz.greetgo.depinject.core.Bean;
 import kz.greetgo.depinject.core.HasAfterInject;
 import kz.zhadyrassyn.regsystem.controller.model.enums.GenderEnum;
+import kz.zhadyrassyn.regsystem.controller.model.enums.RoleTitleEnum;
+import kz.zhadyrassyn.regsystem.controller.model.enums.UserStatusEnum;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.GroupDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.RoleDto;
 import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.UserDto;
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.enums.RoleTitleEnum;
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.enums.UserStatusEnum;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,6 +61,7 @@ public class Db implements HasAfterInject{
         u1.password = "123";
         u1.gender = GenderEnum.MALE;
         u1.birthDate = stringToDate("11/06/1997");
+        u1.phone = "87028733234";
 
         UserDto u2 = new UserDto();
         u2.id = userCounter.incrementAndGet();
@@ -73,6 +74,7 @@ public class Db implements HasAfterInject{
         u2.gender = GenderEnum.MALE;
         u2.birthDate = stringToDate("11/06/1998");
         u2.status = UserStatusEnum.ACTIVE;
+        u2.phone = "8883242343";
 
         UserDto u3 = new UserDto();
         u3.id = userCounter.incrementAndGet();
@@ -85,6 +87,7 @@ public class Db implements HasAfterInject{
         u3.gender = GenderEnum.FEMALE;
         u3.birthDate = stringToDate("11/06/1996");
         u3.status = UserStatusEnum.ACTIVE;
+        u3.phone = "87783323431";
 
         users.put(u1.id, u1);
         users.put(u2.id, u2);

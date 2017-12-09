@@ -1,6 +1,7 @@
 package kz.zhadyrassyn.regsystem.stand.register_stand_impl.model;
 
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.enums.RoleTitleEnum;
+
+import kz.zhadyrassyn.regsystem.controller.model.enums.RoleTitleEnum;
 
 public class RoleDto {
     public Long id;

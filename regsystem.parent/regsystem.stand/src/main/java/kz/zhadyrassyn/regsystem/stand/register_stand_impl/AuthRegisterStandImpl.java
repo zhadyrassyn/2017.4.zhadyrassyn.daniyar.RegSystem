@@ -7,6 +7,8 @@ import kz.greetgo.depinject.core.BeanGetter;
 import kz.greetgo.email.Email;
 import kz.greetgo.email.EmailSender;
 import kz.zhadyrassyn.regsystem.controller.model.AuthInfo;
+import kz.zhadyrassyn.regsystem.controller.model.enums.RoleTitleEnum;
+import kz.zhadyrassyn.regsystem.controller.model.enums.UserStatusEnum;
 import kz.zhadyrassyn.regsystem.controller.model.request.SignInRequest;
 import kz.zhadyrassyn.regsystem.controller.model.request.SignUpRequest;
 import kz.zhadyrassyn.regsystem.controller.model.response.SignInResponse;
@@ -51,6 +53,11 @@ public class AuthRegisterStandImpl implements AuthRegister{
         return signUpResponse;
     }
 
+    @Override
+    public AuthInfo activate(String activationToken) {
+        return null;
+    }
+
     private void saveUser(SignUpRequest requestInfo) {
         long nextId = db.get().userCounter.incrementAndGet();
         UserDto userDto = new UserDto(nextId, requestInfo.studentId,
@@ -81,19 +88,32 @@ public class AuthRegisterStandImpl implements AuthRegister{
 
         //check if exists by email and password
         List<UserDto> userDtos = new ArrayList<>(db.get().users.values());
-        boolean exists = userDtos.stream()
-                .anyMatch(t -> Objects.equals(requestInfo.email,
-                        t.email) && Objects.equals(requestInfo.password, t.password));
+        boolean existsAndActive = userDtos.stream()
+                .anyMatch(t ->
+                                Objects.equals(requestInfo.email, t.email) &&
+                                        Objects.equals(requestInfo.password, t.password) &&
+                                        t.status == UserStatusEnum.ACTIVE);
 
-        if(exists) {
+
+        if(existsAndActive) {
+            //get user id
+
             String token = jwtUtil.get().generateToken(requestInfo.email);
             response.status = "1";
             response.token = token;
+            response.roleTitle = RoleTitleEnum.MODERATOR;
         } else {
             response.status = "-1";
         }
 
         return response;
+    }
+
+    @SuppressWarnings("unused")
+    private RoleTitleEnum getUserRole(long id) {
+        Map<Long, Long> userToRoleMap = db.get().userToRoleMapping;
+        long roleId = userToRoleMap.get(id);
+        return db.get().roles.get(roleId).title;
     }
 
 //        AuthInfo output = new AuthInfo();
@@ -139,130 +159,130 @@ public class AuthRegisterStandImpl implements AuthRegister{
 //        output.message = "Please, confirm your registration with the link we have send to your email.";
 //        return output;
 //    }
-
-    @Override
-    public AuthInfo activate(String activationToken) {
-        AuthInfo output = new AuthInfo();
-
-        Map<String, UserDto> tokens = db.get().activationTokenToUserMapping;
-        if(!tokens.containsKey(activationToken)) {
-            output.message = "Unknown link";
-            return output;
-        }
-
-        UserDto user = tokens.get(activationToken);
-//        user.active = true;
-
-//        for(String key: db.get().activationTokenToUserMapping.keySet()) {
-//            System.out.println(db.get().activationTokenToUserMapping.get(key));
+//
+//    @Override
+//    public AuthInfo activate(String activationToken) {
+//        AuthInfo output = new AuthInfo();
+//
+//        Map<String, UserDto> tokens = db.get().activationTokenToUserMapping;
+//        if(!tokens.containsKey(activationToken)) {
+//            output.message = "Unknown link";
+//            return output;
 //        }
-        output.message = "Confirmation successfully done!";
-        return output;
-    }
-
-    private void sendEmail(UserDto savedUser) {
 //
-//        String body = "Dear user. We are glad to welcome you!\n\n"
-//                + "Please, follow to link below to confirm your registration\n\n"
-//                + "http://localhost:1234/regsystem/api/sign/up/" + savedUser.activationToken;
-
-        Email emailSend = new Email();
-        emailSend.setFrom(config.get().loginAccount());
-        emailSend.setTo(savedUser.email);
-        emailSend.setSubject("Registration validation");
-//        emailSend.setBody(body);
-
-        emailSenderBeanGetter.get().send(emailSend);
-    }
-
-    private boolean checkForExistence(String email, String password) {
-        System.out.println("CHECKING FOR EXISTENCE: " + email + ", " + password);
-        boolean flag = false;
-        Map<Long, UserDto> users = db.get().users;
-
-        for (Long key: users.keySet()) {
-            UserDto user = users.get(key);
-
-            if(email.equals(user.email) &&
-                    password.equals(user.password)) {
-                flag = true;
-                break;
-            }
-        }
-        return flag;
-    }
-
-    private UserDto getUser(String email, String password) {
-        UserDto userToReturn = new UserDto();
-        Map<Long, UserDto> users = db.get().users;
-
-        for (Long key: users.keySet()) {
-            UserDto user = users.get(key);
-
-            if(email.equals(user.email) &&
-                    password.equals(user.password)) {
-                userToReturn = user;
-            }
-        }
-        return userToReturn;
-    }
-
-    private UserDto saveAndRetrieve(String email, String password) {
-//        UserDto user = new UserDto(email, password);
-//        user.active = false;
-//        user.id = db.get().counter.incrementAndGet();
-//        db.get().users.put(user.id, user);
+//        UserDto user = tokens.get(activationToken);
+////        user.active = true;
 //
-//        //get student role
-//        long studentRoleId = getStudentRoleId();
+////        for(String key: db.get().activationTokenToUserMapping.keySet()) {
+////            System.out.println(db.get().activationTokenToUserMapping.get(key));
+////        }
+//        output.message = "Confirmation successfully done!";
+//        return output;
+//    }
 //
-//        //saveAndRetrieve
-//        db.get().userToRoleMapping.put(user.id, studentRoleId);
+//    private void sendEmail(UserDto savedUser) {
+////
+////        String body = "Dear user. We are glad to welcome you!\n\n"
+////                + "Please, follow to link below to confirm your registration\n\n"
+////                + "http://localhost:1234/regsystem/api/sign/up/" + savedUser.activationToken;
 //
-//        //generateTokenForHim
-//        String activationToken = UUID.randomUUID().toString();
-//        user.activationToken = activationToken;
-//        db.get().activationTokenToUserMapping.put(activationToken, user);
-
-        return null;
-    }
-
-    private Long getStudentRoleId() {
-        Map<Long, RoleDto> roles = db.get().roles;
-        long studentRoleId = 0;
-        for(Long key: roles.keySet()) {
-            if(roles.get(key).title.equals("student")) {
-                studentRoleId = key;
-            }
-        }
-        return studentRoleId;
-    }
-
-    private String getUserRole(Long userId) {
-//        print();
-
-        Long userRoleId = db.get().userToRoleMapping.get(userId);
-//        String userRole = db.get().roles.get(userRoleId).title;
-
-//        System.out.println(userId + ", " + userRoleId);
-//        return userRole;
-        return null;
-    }
-
-    private void print() {
-        System.out.println("USERS:");
-        for (Long key: db.get().users.keySet()) {
-            System.out.println(db.get().users.get(key));
-        }
-
-        System.out.println("ROLES:");
-        for(Long key: db.get().roles.keySet()) {
-            System.out.println(db.get().roles.get(key));
-        }
-
-        System.out.println("USER_ROLE");
-        for (Long key: db.get().userToRoleMapping.keySet()) {
-            System.out.println(key + " " + db.get().userToRoleMapping.get(key));
-        }
-    }
+//        Email emailSend = new Email();
+//        emailSend.setFrom(config.get().loginAccount());
+//        emailSend.setTo(savedUser.email);
+//        emailSend.setSubject("Registration validation");
+////        emailSend.setBody(body);
+//
+//        emailSenderBeanGetter.get().send(emailSend);
+//    }
+//
+//    private boolean checkForExistence(String email, String password) {
+//        System.out.println("CHECKING FOR EXISTENCE: " + email + ", " + password);
+//        boolean flag = false;
+//        Map<Long, UserDto> users = db.get().users;
+//
+//        for (Long key: users.keySet()) {
+//            UserDto user = users.get(key);
+//
+//            if(email.equals(user.email) &&
+//                    password.equals(user.password)) {
+//                flag = true;
+//                break;
+//            }
+//        }
+//        return flag;
+//    }
+//
+//    private UserDto getUser(String email, String password) {
+//        UserDto userToReturn = new UserDto();
+//        Map<Long, UserDto> users = db.get().users;
+//
+//        for (Long key: users.keySet()) {
+//            UserDto user = users.get(key);
+//
+//            if(email.equals(user.email) &&
+//                    password.equals(user.password)) {
+//                userToReturn = user;
+//            }
+//        }
+//        return userToReturn;
+//    }
+//
+//    private UserDto saveAndRetrieve(String email, String password) {
+////        UserDto user = new UserDto(email, password);
+////        user.active = false;
+////        user.id = db.get().counter.incrementAndGet();
+////        db.get().users.put(user.id, user);
+////
+////        //get student role
+////        long studentRoleId = getStudentRoleId();
+////
+////        //saveAndRetrieve
+////        db.get().userToRoleMapping.put(user.id, studentRoleId);
+////
+////        //generateTokenForHim
+////        String activationToken = UUID.randomUUID().toString();
+////        user.activationToken = activationToken;
+////        db.get().activationTokenToUserMapping.put(activationToken, user);
+//
+//        return null;
+//    }
+//
+//    private Long getStudentRoleId() {
+//        Map<Long, RoleDto> roles = db.get().roles;
+//        long studentRoleId = 0;
+//        for(Long key: roles.keySet()) {
+//            if(roles.get(key).title.equals("student")) {
+//                studentRoleId = key;
+//            }
+//        }
+//        return studentRoleId;
+//    }
+//
+//    private String getUserRole(Long userId) {
+////        print();
+//
+//        Long userRoleId = db.get().userToRoleMapping.get(userId);
+////        String userRole = db.get().roles.get(userRoleId).title;
+//
+////        System.out.println(userId + ", " + userRoleId);
+////        return userRole;
+//        return null;
+//    }
+//
+//    private void print() {
+//        System.out.println("USERS:");
+//        for (Long key: db.get().users.keySet()) {
+//            System.out.println(db.get().users.get(key));
+//        }
+//
+//        System.out.println("ROLES:");
+//        for(Long key: db.get().roles.keySet()) {
+//            System.out.println(db.get().roles.get(key));
+//        }
+//
+//        System.out.println("USER_ROLE");
+//        for (Long key: db.get().userToRoleMapping.keySet()) {
+//            System.out.println(key + " " + db.get().userToRoleMapping.get(key));
+//        }
+//    }
 }

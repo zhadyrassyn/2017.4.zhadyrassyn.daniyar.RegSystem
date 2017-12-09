@@ -18,7 +18,6 @@ class App extends React.Component {
 
     const {dispatch} = props;
 
-
     this.alertOptions = {
       offset: 40,
       position: 'top right',
@@ -35,9 +34,6 @@ class App extends React.Component {
 
   render() {
 
-    const items = this.props.historyItems;
-
-    const leftSymbols = this.state.leftSymbols;
     return (
       <div className="container-fluid">
         <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
@@ -56,8 +52,6 @@ class App extends React.Component {
 
 
 const mapStateToProps = state => ({
-    isSending: state.messageStatus.isSending,
-    didInvalidate: state.messageStatus.didInvalidate
 });
 
 

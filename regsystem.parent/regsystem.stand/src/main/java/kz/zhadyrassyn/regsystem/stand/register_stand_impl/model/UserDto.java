@@ -1,7 +1,7 @@
 package kz.zhadyrassyn.regsystem.stand.register_stand_impl.model;
 
 import kz.zhadyrassyn.regsystem.controller.model.enums.GenderEnum;
-import kz.zhadyrassyn.regsystem.stand.register_stand_impl.model.enums.UserStatusEnum;
+import kz.zhadyrassyn.regsystem.controller.model.enums.UserStatusEnum;
 
 import java.util.Date;
 
