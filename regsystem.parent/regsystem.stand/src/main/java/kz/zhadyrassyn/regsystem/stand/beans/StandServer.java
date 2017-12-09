@@ -12,7 +12,7 @@ import java.util.List;
 
 @Bean
 public class StandServer implements HasAfterInject {
-  public final Server server = new Server(8080);
+  public final Server server = new Server(8081);
 
   public StandServer start() throws Exception {
     server.start();

@@ -9,6 +9,8 @@ import Login from './components/Login';
 import Register from './components/Register'
 
 import {history} from "./helpers/history";
+import {browserHistory} from 'react-router'
+import RegisterResponse from "./components/RegisterResponse";
 
 
 // sendMessage({sourceAddress: 'daniyar', destinationAddress: '87028715515', smsText: 'I love you!'})(store.dispatch);
@@ -16,6 +18,7 @@ const store = configureStore();
 
 ReactDOM.render(
     <Provider store={store}>
+
         <Router history={history}>
             <div>
                 <Route path="/**" render={() => (
@@ -28,6 +31,9 @@ ReactDOM.render(
 
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
+                <Route path="register/response" component={RegisterResponse}/>
+
+
             </div>
 
         </Router>

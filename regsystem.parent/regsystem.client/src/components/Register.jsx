@@ -7,6 +7,8 @@ import {connect} from 'react-redux'
 
 import './../style/Register.css'
 
+import {history} from "../helpers/history";
+
 import {facultyConstants} from "../constants/Constants";
 import { withRouter } from 'react-router-dom';
 
@@ -16,9 +18,21 @@ import { bindActionCreators } from 'redux'
 
 import InputMask from 'react-input-mask';
 
+import { browserHistory } from 'react-router'
+
+import AlertContainer from 'react-alert'
+
 export class Register extends Component {
     constructor(props) {
         super(props)
+
+        this.alertOptions = {
+            offset: 40,
+            position: 'top right',
+            theme: 'light',
+            time: 5000,
+            transition: 'scale'
+        }
 
         const {dispatch} = props
 
@@ -165,6 +179,11 @@ export class Register extends Component {
 
         let signUpAction = AuthActionCreators.signUp(student,
             () => {
+
+                history.push('/register/response')
+            },
+            (message) => {
+                this.msg.show(message)
                 this.setState({showLoader: false})
             }
         )
@@ -195,7 +214,7 @@ export class Register extends Component {
 
 
                 <div id="register-wrapper">
-                    {/*<AlertContainer ref={a => this.msg = a} {...this.alertOptions} />*/}
+                    <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                     <div className="container-fluid h-100">
                         <div className="row h-100 justify-content-center align-items-center">
                             <form id="register-form" noValidate>

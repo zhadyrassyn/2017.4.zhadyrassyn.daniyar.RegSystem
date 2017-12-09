@@ -43,11 +43,13 @@ export const login = (username, password, onError) => dispatch => {
   )
 }
 
-export const signUp = (user, onError) => dispatch => {
+export const signUp = (user, onSuccess, onError) => dispatch => {
     dispatch(signUpRequest(user))
     authService.register(user).then(
         success => {
             dispatch(signUpSuccess(success))
+            if(success.status === "-1") onError(success.message)
+            else onSuccess()
             console.log("SUCCESS: " + JSON.stringify(success))
         },
         error => {

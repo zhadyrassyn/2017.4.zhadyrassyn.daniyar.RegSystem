@@ -25,7 +25,7 @@ export const constants = {
 };
 
 export const urls = {
-    BASE_API: 'http://localhost:8080/regsystem/api'
+    BASE_API: 'http://localhost:8081/regsystem/api'
 }
 
 export const facultyConstants = {
