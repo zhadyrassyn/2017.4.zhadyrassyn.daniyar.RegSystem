@@ -21,6 +21,10 @@ ReactDOM.render(
 
         <Router history={history}>
             <div>
+                <Route path="/login" component={Login}/>
+                <Route path="/register" component={Register}/>
+                <Route path="/register-response" component={RegisterResponse}/>
+
                 <Route path="/**" render={() => (
                     !localStorage.getItem('user') ? (
                         <Redirect to="/login"/>
@@ -28,14 +32,7 @@ ReactDOM.render(
                         <App/>
                     )
                 )}/>
-
-                <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
-                <Route path="register/response" component={RegisterResponse}/>
-
-
             </div>
-
         </Router>
     </Provider>
     , document.getElementById('root'));

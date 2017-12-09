@@ -1,15 +1,22 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import DatePicker from 'react-date-picker';
-import moment from 'moment';
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
+import '../style/Register.css'
+
 export class RegisterResponse extends Component {
     render() {
+        console.log('RegisterResponse')
         return (
-            <h1>Спасибо за регистрацию. Ожидайте письмо на ваш email</h1>
+            <div className="register-response-wrapper">
+                <div className="container-fluid h-100">
+                    <div className="row h-100 justify-content-center align-items-center">
+                        <h3 className="text-center">Спасибо за регистрацию. Ожидайте письма на ваш email ^_^</h3>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

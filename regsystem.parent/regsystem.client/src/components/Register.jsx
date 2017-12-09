@@ -178,10 +178,6 @@ export class Register extends Component {
         // this.setState({showLoader: true})
 
         let signUpAction = AuthActionCreators.signUp(student,
-            () => {
-
-                history.push('/register/response')
-            },
             (message) => {
                 this.msg.show(message)
                 this.setState({showLoader: false})
@@ -385,4 +381,4 @@ const mapStateToProps = state => ({
 
 
 
-export default withRouter(connect(mapStateToProps)(Register));
+export default connect(mapStateToProps)(Register);

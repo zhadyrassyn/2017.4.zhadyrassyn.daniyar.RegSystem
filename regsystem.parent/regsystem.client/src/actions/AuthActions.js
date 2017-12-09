@@ -49,7 +49,7 @@ export const signUp = (user, onSuccess, onError) => dispatch => {
         success => {
             dispatch(signUpSuccess(success))
             if(success.status === "-1") onError(success.message)
-            else onSuccess()
+            else history.push('/register-response')
             console.log("SUCCESS: " + JSON.stringify(success))
         },
         error => {
